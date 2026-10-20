@@ -1,37 +1,29 @@
-import {createClient} from './vendor/supabase.js';
 import {authConfig} from './auth-config.js';
 import {changesBetween} from './sync.js';
 import {validate} from './model.js';
-export const authCallbackIssue=typeof location!=='undefined'&&new URLSearchParams(location.hash.slice(1)).has('error');
-export const arrivingFromLink=typeof location!=='undefined'&&new URLSearchParams(location.hash.slice(1)).has('access_token');
 export const configured=Boolean(authConfig.url&&authConfig.publishableKey);
-export const emailReady=configured&&authConfig.emailReady;
-export const client=configured?createClient(authConfig.url,authConfig.publishableKey,{auth:{flowType:'implicit',detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}}):null;
-export const redirectUrl=()=>authConfig.redirectUrl||new URL('./',location.href).href;
-export async function checked(promise){const {data,error}=await promise;if(error)throw error;return data;}
-export async function sendLink(email){if(!emailReady)throw Error('Email sign-in is not connected in this preview.');return checked(client.auth.signInWithOtp({email:email.trim().toLowerCase(),options:{emailRedirectTo:redirectUrl()}}));}
-export async function findHome(){const {data:{user},error}=await client.auth.getUser();if(error)throw error;if(!user)return null;const membership=await checked(client.from('paws_members').select('*').eq('user_id',user.id).maybeSingle());if(!membership)return {user,home:null};const home=await checked(client.from('paws_households').select('*').eq('id',membership.household_id).single());return {user,home,membership};}
-export async function loadHome(h){const [pets,events,members]=await Promise.all([checked(client.from('paws_pets').select('*').eq('household_id',h)),checked(client.from('paws_care').select('*').eq('household_id',h).order('at',{ascending:false})),checked(client.from('paws_members').select('*').eq('household_id',h))]);const data={version:1,pets:pets.map(x=>x.data),events:events.map(e=>({id:e.id,petId:e.pet_id,care:e.care,day:e.day,slot:e.slot,at:e.at,by:members.find(m=>m.user_id===e.actor_id)?.display_name||'Household member'}))};if(!validate(data))throw Error('The household data could not be read safely.');return {data,members};}
-// The cache and pending operations are saved together, scoped to verified user + household.
-export class HouseholdSync{
- constructor(home,user,onData,onStatus){this.home=home;this.user=user;this.onData=onData;this.onStatus=onStatus;this.key=`paws.shared.${user.id}.${home.id}`;this.pending=[];this.baseline=null;this.running=false;this.stopped=false;this.timer=null;this.retry=2000;}
- async start(){try{const cache=JSON.parse(localStorage.getItem(this.key)||'null');if(cache&&validate(cache.data)&&Array.isArray(cache.pending)){this.pending=cache.pending;this.baseline=cache.data;this.onData(cache.data);}}catch{}await this.flush();this.timer=setInterval(()=>this.flush(),8000);this.online=()=>this.flush();window.addEventListener('online',this.online);}
- save(data){localStorage.setItem(this.key,JSON.stringify({data,pending:this.pending}));}
- record(data){if(!this.baseline)throw Error('Your household is still loading.');const changes=changesBetween(this.baseline,data);this.pending.push(...changes);this.baseline=structuredClone(data);try{this.save(data);}catch(e){this.onStatus('Storage full · changes are only in memory');throw e;}this.onStatus(this.pending.length?'Saving…':'All changes saved');this.flush();}
- async flush(){if(this.running||this.stopped||!navigator.onLine){if(!navigator.onLine)this.onStatus('Offline · changes stay on this device');return;}this.running=true;try{
-  // Auth and membership are verified on every pull, including after access has been removed.
-  const current=await findHome();if(!current?.home||current.home.id!==this.home.id)throw Error('Household access changed. Sign in again.');
-  while(this.pending.length){const batch=this.pending.slice(0,200),ids=new Set(await checked(client.rpc('paws_apply',{h:this.home.id,operations:batch})));this.pending=this.pending.filter(o=>!ids.has(o.id));this.save(this.baseline);if(!ids.size)throw Error('Changes could not be saved.');}
-  const {data}=await loadHome(this.home.id);if(this.stopped)return;
-  // Edits made while the request was in flight remain optimistic and queued for the next pass.
-  if(!this.pending.length){this.baseline=data;this.save(data);this.onData(data);}
-  this.onStatus(this.pending.length?'Saving…':'Shared · all changes saved');
- }catch(e){this.onStatus(e.message?.includes('access changed')?'Access changed · sign in again':'Couldn’t sync · your changes are saved here');}finally{this.running=false;}}
- stop(){this.stopped=true;clearInterval(this.timer);window.removeEventListener('online',this.online);}
+const SESSION='paws.home-session.v1';
+export function savedSession(){try{const s=JSON.parse(localStorage.getItem(SESSION));return s?.token&&s?.home?.id&&s?.user?.id?s:null;}catch{return null;}}
+export function remember(info){localStorage.setItem(SESSION,JSON.stringify(info));}
+export function forget(){localStorage.removeItem(SESSION);}
+export const formatCode=code=>String(code||'').match(/.{1,4}/g)?.join('-')||'';
+export async function roomRequest(request){
+ if(!configured)throw Error('Shared homes are not connected yet.');
+ const response=await fetch(authConfig.url+'/rest/v1/rpc/paws_room',{method:'POST',headers:{apikey:authConfig.publishableKey,'Content-Type':'application/json'},body:JSON.stringify({request}),signal:AbortSignal.timeout(20000)});
+ const data=await response.json();if(!response.ok||data?.error){const err=Error(data?.error||data?.message||'Couldn’t reach your home. Try again.');err.accessLost=err.message.includes('Join your home again');throw err;}return data;
 }
-export async function invitePerson(home,email){const id=await checked(client.rpc('paws_invite',{h:home.id,recipient:email}));try{
- // A separate non-persistent client requests the invitee’s magic link without changing the inviter’s session.
- const sender=createClient(authConfig.url,authConfig.publishableKey,{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false,flowType:'implicit'}});
- if(!emailReady)throw Error('Email delivery is not configured.');
- await checked(sender.auth.signInWithOtp({email:email.trim().toLowerCase(),options:{emailRedirectTo:redirectUrl()}}));return id;
- }catch(e){throw Error('Invitation saved, but the email could not be sent. '+e.message);}}
+export async function enterHome(details){const info=await roomRequest(details);if(!validate(info.data))throw Error('This home’s data could not be read safely.');remember({...info,data:undefined,ack:undefined});return info;}
+export async function leaveHome(info){await roomRequest({action:'leave',token:info.token});forget();}
+export async function rotatePasscode(info,passcode){return roomRequest({action:'rotate',token:info.token,passcode});}
+export class HouseholdSync{
+ constructor(info,onData,onStatus,onAccessLost){this.info=info;this.onData=onData;this.onStatus=onStatus;this.onAccessLost=onAccessLost;this.key=`paws.rooms.${info.home.id}.${info.user.id}`;this.pending=[];this.baseline=null;this.running=false;this.stopped=false;this.timer=null;}
+ async start(initial){try{const cache=JSON.parse(localStorage.getItem(this.key)||'null');if(cache&&validate(cache.data)&&Array.isArray(cache.pending)){this.pending=cache.pending;this.baseline=cache.data;this.onData(structuredClone(cache.data));}}catch{}if(!this.baseline&&initial&&validate(initial)){this.baseline=initial;this.save(initial);this.onData(structuredClone(initial));}await this.flush();if(this.stopped)return;this.timer=setInterval(()=>this.flush(),4000);this.online=()=>this.flush();this.visible=()=>{if(!document.hidden)this.flush();};window.addEventListener('online',this.online);document.addEventListener('visibilitychange',this.visible);}
+ save(data){localStorage.setItem(this.key,JSON.stringify({data,pending:this.pending}));}
+ record(data){if(!this.baseline||this.stopped)throw Error('Your home is not connected.');const changes=changesBetween(this.baseline,data);const next=[...this.pending,...changes];localStorage.setItem(this.key,JSON.stringify({data,pending:next}));this.pending=next;this.baseline=structuredClone(data);this.onStatus(this.pending.length?'Saving…':'Shared · all changes saved');this.flush();}
+ async flush(){if(this.running||this.stopped)return;if(!navigator.onLine){this.onStatus('Offline · changes saved on this device');return;}this.running=true;try{
+ while(this.pending.length&&!this.stopped){const batch=this.pending.slice(0,200);const result=await roomRequest({action:'apply',token:this.info.token,operations:batch});const ids=new Set(result.ack);if(!ids.size)throw Error('Changes could not be saved.');this.pending=this.pending.filter(o=>!ids.has(o.id));this.save(this.baseline);}
+ if(this.stopped)return;const result=await roomRequest({action:'read',token:this.info.token});if(this.stopped)return;if(!validate(result.data))throw Error('Invalid home data');if(!this.pending.length){this.baseline=result.data;this.save(result.data);this.onData(structuredClone(result.data));}this.onStatus(this.pending.length?'Saving…':'Shared · all changes saved');
+ }catch(e){if(e.accessLost){this.stop();forget();localStorage.removeItem(this.key);this.onAccessLost?.();}else this.onStatus('Couldn’t sync · retrying automatically');}finally{this.running=false;}}
+ stop(){this.stopped=true;clearInterval(this.timer);window.removeEventListener('online',this.online);document.removeEventListener('visibilitychange',this.visible);}
+ clear(){this.stop();localStorage.removeItem(this.key);}
+}
