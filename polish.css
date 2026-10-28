@@ -18,3 +18,24 @@ dialog:not(.welcome){background:#f7f8fa;border-color:#e0e3ea;box-shadow:0 28px 1
 
 /* A quiet, optional install guide. */
 .install-guide{margin:12px 0 0;text-align:left;font-size:13px;color:var(--secondary)}.install-guide>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;justify-content:center;gap:7px;list-style:none;color:var(--accent);font-size:13px;font-weight:550}.install-guide>summary::-webkit-details-marker{display:none}.install-guide>div{padding:14px 16px;background:#edf0f5;border-radius:16px;line-height:1.6}.install-guide p{margin:0 0 10px!important;font-size:13px!important}.install-guide ol{padding-left:20px;margin:0}.install-guide li{padding:0 0 10px 3px}.install-guide strong{color:#303947;font-weight:600}.install-guide small{font-size:11px}.install-guide .install-last{margin:3px 0 0!important}.setting .install-guide>summary{justify-content:flex-start}.installed-app .install-guide{display:none}@media(display-mode:standalone){.install-guide{display:none}}
+
+/* Edge-to-edge shell: one scroll surface, with room for system UI. */
+:root{--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px);--safe-left:env(safe-area-inset-left,0px);--safe-right:env(safe-area-inset-right,0px)}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:calc(80px + var(--safe-top));overscroll-behavior-y:none}
+body{overscroll-behavior-y:none}
+html.modal-open{overflow:hidden}html.modal-open body{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+main{padding-left:max(42px,var(--safe-left));padding-right:max(42px,var(--safe-right));padding-bottom:calc(36px + var(--safe-bottom))}
+dialog{position:fixed;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scroll-padding:24px}
+.welcome{inset:var(--view-top,0px) 0 auto;height:var(--view-height,100dvh);overflow-x:hidden}
+.experience-content{padding-top:calc(24px + var(--safe-top));padding-bottom:calc(20px + var(--safe-bottom));padding-left:max(38px,var(--safe-left));padding-right:max(38px,var(--safe-right))}
+.experience-stage{flex-shrink:0}.experience-foot{flex-shrink:0}
+#toast{bottom:calc(16px + var(--safe-bottom));max-width:calc(100% - max(24px,var(--safe-left)) - max(24px,var(--safe-right)))}
+@media(max-width:599px){
+ main{padding:0 max(20px,var(--safe-right)) calc(28px + var(--safe-bottom)) max(20px,var(--safe-left))}
+ header{top:0;padding-top:calc(12px + var(--safe-top));padding-bottom:12px}
+ .experience-content{padding-top:calc(18px + var(--safe-top));padding-left:max(27px,var(--safe-left));padding-right:max(27px,var(--safe-right))}
+ .experience-stage{padding-top:24px;padding-bottom:12px}.experience-foot{margin-top:12px}
+ dialog:not(.welcome){bottom:var(--keyboard-bottom,0px);max-height:calc(var(--view-height,100dvh) - var(--safe-top) - 12px);padding-left:max(24px,var(--safe-left));padding-right:max(24px,var(--safe-right));padding-bottom:calc(24px + var(--safe-bottom))}
+ input:not([type=checkbox]):not([type=file]),select,.experience-stage #room-code{font-size:16px}
+}
+@media(max-height:700px){.experience-stage{padding-top:18px}.welcome-art{height:90px;margin-bottom:16px}.experience-stage h1{font-size:36px;margin-bottom:14px}.experience-copy{margin-bottom:16px}.experience-stage:has(.pin-pad){padding-top:14px}.experience-stage:has(.pin-pad) h1{font-size:28px}.pin-dots{padding-bottom:18px}.pin-keys{gap:8px 22px}.pin-keys button{width:58px;height:58px}}
