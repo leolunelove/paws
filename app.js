@@ -1,3 +1,6 @@
+const appDisplay=matchMedia('(display-mode: standalone)');
+const updateAppDisplay=()=>document.documentElement.classList.toggle('installed-app',appDisplay.matches||navigator.standalone===true);
+updateAppDisplay();appDisplay.addEventListener('change',updateAppDisplay);
 import {CARE,dayKey,seed,todayEvent,logCare,validate,feedingTimes,careEvents,slotEvent,nextFeed,dayInZone} from './model.js';
 const $=s=>document.querySelector(s),KEY='paws.household.v1';
 import {startExperience} from './experience.js';
