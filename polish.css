@@ -173,3 +173,20 @@ html.installed-app #preferences .install-guide-trigger{display:none}
 @media(display-mode:standalone){#preferences .install-guide-trigger{display:none}}
 #preferences .setting>strong+.text-button{margin-top:12px}
 #preferences .install-guide-trigger span{display:none}
+
+/* Recent care and feedback share the same quiet, readable system styling. */
+.history{padding:0 18px}.history>summary{font-size:13px;min-height:58px;color:#465366}.history-row{display:grid;grid-template-columns:34px minmax(0,1fr) 48px;align-items:center;gap:12px;padding:15px 0;border-top:1px solid #edf0f4;flex-wrap:nowrap}
+.history-symbol{width:34px;height:34px;border:0;border-radius:12px;background:#fff0e8;color:#b36143}.history-symbol svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.history-row[data-care=walked] .history-symbol{background:#e8f4ee;color:#4f8a70}.history-row[data-care=medication] .history-symbol{background:#f0eafa;color:#8965ad}
+.history-copy{min-width:0}.history-title{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 8px;line-height:1.4}.history-title strong{font-size:13px;font-weight:600;overflow-wrap:anywhere}.history-title>span{font-size:12px;color:#6b7787}.history-row small{font-size:10px;line-height:1.6;color:#828b98;margin-top:5px;overflow-wrap:anywhere}.history-row time{font-size:inherit;color:inherit;margin:0;white-space:normal}.history-undo{min-width:48px;min-height:44px;padding:8px 0;border-radius:12px;font-size:12px;color:#ad4935}
+.empty-history{padding:24px 0 28px;justify-content:flex-start;gap:13px}.empty-heart{display:grid;place-items:center;flex-shrink:0;width:35px;height:35px;border-radius:12px;background:#f2f4f8;color:#9aa4b0;font-size:24px}.empty-history p{font-size:13px;color:#596676}.empty-history small{font-size:11px;line-height:1.5;color:#8a939f;margin-top:4px}
+.history #more{width:100%;border-top:1px solid #edf0f4;min-height:48px;margin:0;font-size:12px}
+#toast:not([hidden]){display:flex;align-items:center;gap:10px}#toast{width:max-content;max-width:min(480px,calc(100% - 32px - var(--safe-left) - var(--safe-right)));padding:8px 9px 8px 13px;background:#fffefef5;color:#354253;border:1px solid #e0e4eb;border-radius:20px;box-shadow:0 6px 30px #2432491c;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);font-size:13px;line-height:1.45;animation:toast-in .2s var(--ease)}
+.toast-symbol{display:grid;place-items:center;flex-shrink:0;width:25px;height:25px;border-radius:50%;background:#e8f3ec;color:#42815e;font-size:13px}#toast-message{min-width:0;overflow-wrap:anywhere}
+#toast button{flex-shrink:0;min-height:44px;margin:0;padding:0 8px;font-size:13px;color:#ad4935;font-weight:600;border-radius:12px}#toast #toast-close{width:32px;padding:0;color:#8d97a4;font-size:20px;font-weight:400}#toast #toast-undo[hidden]{display:none}
+@keyframes toast-in{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
+@media(max-width:360px){.history{padding:0 14px}.history-row{grid-template-columns:30px minmax(0,1fr) 44px;gap:8px}.history-symbol{width:30px;height:30px}#toast{gap:6px;padding-left:10px}.toast-symbol{display:none}#toast button{padding:0 6px}}
+@media(prefers-reduced-motion:reduce){#toast{animation:none}}
+#toast[data-tone=info] .toast-symbol{background:#edf0f5;color:#758092}#toast[data-tone=warning] .toast-symbol{background:#fff0df;color:#a56a27}
+
+.history-row small{font-size:11px}.history-title strong{font-size:14px}
