@@ -66,3 +66,30 @@ dialog{position:fixed;overflow-y:auto;overscroll-behavior:contain;-webkit-overfl
 
 .welcome[data-step=welcome] .experience-content{justify-content:center}
 .welcome[data-step=welcome] .experience-stage{margin:clamp(12px,2dvh,20px) auto 0}
+
+/* The same balanced arrival carries through home setup and the PIN steps. */
+.welcome:not([data-step=welcome]) .experience-content{justify-content:center}
+.welcome:not([data-step=welcome]) .experience-stage{max-width:340px;margin:clamp(18px,3dvh,28px) auto 0;padding:0}
+.welcome:is([data-step=create],[data-step=join]) h1{font-size:38px;letter-spacing:-1.4px;margin-bottom:14px}
+.welcome:is([data-step=create],[data-step=join]) .experience-copy{margin-bottom:22px;line-height:1.6}
+.welcome:is([data-step=create],[data-step=join]) label:not(.check){display:block;margin:16px 0 7px;font-weight:500}
+.welcome:is([data-step=create],[data-step=join]) input:not([type=checkbox]){width:100%;min-height:52px;margin:0;background:#fff}
+.welcome:is([data-step=create],[data-step=join]) form>.primary{margin-top:22px}
+.welcome:not([data-step=welcome]) .experience-secondary{margin-top:8px}
+.welcome[data-step=pin] .experience-eyebrow{margin-bottom:12px}
+.welcome[data-step=pin] h1{margin-bottom:12px}
+.welcome[data-step=pin] .experience-hint{margin:12px 0 0}
+@media(max-height:700px){
+ .welcome:not([data-step=welcome]) .experience-content{padding-top:calc(12px + var(--safe-top));padding-bottom:calc(12px + var(--safe-bottom))}
+ .welcome:not([data-step=welcome]) .experience-stage{margin-top:16px}
+ .welcome:is([data-step=create],[data-step=join]) h1{font-size:32px;margin-bottom:12px}
+ .welcome:is([data-step=create],[data-step=join]) .experience-copy{margin-bottom:12px}
+ .welcome:is([data-step=create],[data-step=join]) form>.primary{margin-top:18px}
+}
+
+.install-guide-trigger{display:block;min-height:44px;margin:4px auto 0;padding:8px;font-size:13px}
+.setting .install-guide-trigger{margin-left:0;padding-left:0}
+.installed-app .install-guide-trigger{display:none}
+.install-help-copy{font-size:14px;line-height:1.65;color:var(--secondary)}.install-help-copy ol{padding-left:22px;margin:20px 0}.install-help-copy li{padding:0 0 16px 5px}.install-help-copy strong{font-weight:600;color:#303947}.install-help-copy small{font-size:12px}.install-help-copy .install-last{font-size:13px;margin-bottom:20px}
+#install-help .primary{width:100%}
+@media(display-mode:standalone){.install-guide-trigger{display:none}}

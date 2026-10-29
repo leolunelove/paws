@@ -4,7 +4,7 @@ const updateAppDisplay=()=>document.documentElement.classList.toggle('installed-
 updateAppDisplay();appDisplay.addEventListener('change',updateAppDisplay);
 import {CARE,dayKey,seed,todayEvent,logCare,validate,feedingTimes,careEvents,slotEvent,nextFeed,dayInZone} from './model.js';
 const $=s=>document.querySelector(s),KEY='paws.household.v1';
-import {startExperience} from './experience.js?v=21';
+import {startExperience} from './experience.js?v=22';
 import {portraits,paw} from './portraits.js';
 $('.paw').innerHTML=paw;
 const icons={bowl:'<path d="M3 10h18c0 7-4 10-9 10S3 17 3 10Z"/><path d="M7 6v1m5-3v3m5-1v1"/>',walk:'<path d="m6 17 4-5 4 3 3 5M10 12l2-6 4 4 4 1M3 20h5"/><circle cx="14" cy="3" r="1.6"/>',pill:'<path d="m8 16 8-8m-9-3a5 5 0 0 1 7 0l5 5a5 5 0 0 1-7 7l-5-5a5 5 0 0 1 0-7Z"/>'};
@@ -76,3 +76,5 @@ window.addEventListener('storage',e=>{if(sharedMode)return;if(e.key===KEY&&e.new
 render();if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>notify('Offline setup unavailable. Your local care data still works.'));
 
 householdController=await startExperience({getLocal:readLocal,hasLocal,onData:data=>{const unchanged=JSON.stringify(state)===JSON.stringify(data);state=data;if(sharedMode){const wasReady=sharedReady;sharedReady=true;if(unchanged&&wasReady)return;}render();},onSync:status=>{if(syncStatus===status)return;syncStatus=status;render();},onMode:(mode,info)=>{sharedMode=mode==='shared';sharedReady=false;if(sharedMode)state={version:1,pets:[],events:[]};householdZone=info?.home?.timezone||null;if(!sharedMode)state=readLocal();render();}});
+
+document.addEventListener('click',e=>{if(e.target.closest('[data-install-guide]'))openDialog($('#install-help'));});
