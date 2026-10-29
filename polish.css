@@ -63,3 +63,6 @@ dialog{position:fixed;overflow-y:auto;overscroll-behavior:contain;-webkit-overfl
  .welcome[data-step=welcome] .experience-secondary{margin-top:0}
 }
 @media(max-height:600px){.welcome[data-step=welcome] .experience-stage{margin-top:16px}.welcome[data-step=welcome] .welcome-art{height:48px;margin-bottom:8px}.welcome[data-step=welcome] .welcome-paw{width:48px;height:48px;border-radius:16px}.welcome[data-step=welcome] .welcome-paw svg{width:30px;height:30px}.welcome[data-step=welcome] h1{font-size:32px}}
+
+.welcome[data-step=welcome] .experience-content{justify-content:center}
+.welcome[data-step=welcome] .experience-stage{margin:clamp(12px,2dvh,20px) auto 0}
