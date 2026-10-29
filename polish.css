@@ -108,3 +108,33 @@ main .brand{font-size:23px;letter-spacing:-.9px;gap:7px}main .paw{width:29px;hei
 @media(hover:hover){.simple-care:hover{background:#f6f7fa;border-color:#edf0f4}.simple-care.done:hover{background:#f0f7f2;border-color:#edf0f4}.pet:hover{box-shadow:0 3px 16px #26314908}}
 @media(max-width:599px){main>header{padding-top:calc(10px + var(--safe-top));padding-bottom:10px}.header-actions{gap:8px}.intro{flex-direction:column;align-items:flex-start;gap:7px;padding-top:22px;padding-bottom:18px}.intro h1{font-size:36px}.daily{padding-bottom:22px}#progress-text{font-size:13px}.pet{padding:18px 17px 6px;border-radius:23px}#pets{gap:16px}.pet-head{margin-bottom:14px}.pet h3{font-size:23px}.simple-care{min-height:65px}.portrait{width:53px;height:53px;border-radius:18px}}
 @media(prefers-reduced-motion:reduce){.track i{transition:none}}
+
+/* Pet editor: short grouped fields, one visible pet picker and a steady save action. */
+#editor{padding-bottom:0;scroll-padding-bottom:110px}
+#editor .sheet-head{align-items:center;gap:12px;margin-bottom:24px}
+#editor .sheet-head h2{font-size:25px;line-height:1.2;overflow-wrap:anywhere}
+#editor .sheet-head .close{flex-shrink:0;width:44px;min-height:44px;border-radius:50%;background:#e9ecf1}
+#editor label,#editor legend{font-size:12px;font-weight:500;color:#737e8d}
+#editor input:not([type=checkbox]),#editor select{min-height:52px;font-size:16px;background:#fff;border:1px solid #e0e4eb;border-radius:14px;margin-top:8px}
+#editor fieldset{margin:22px 0}#editor legend{margin-bottom:10px}
+#portraits{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+#portraits button{min-height:80px;min-width:0;padding:7px 2px;gap:5px;border:1px solid #e1e5eb;background:#fff;border-radius:15px;font-size:10px;color:#6a7584;box-shadow:none}
+#portraits svg{width:39px;height:39px;max-width:100%}
+#portraits button[aria-pressed=true]{border-color:#c95a43;background:#fff0e9;color:#a34230;box-shadow:0 0 0 1px #c95a43}
+#editor .care-details{border:1px solid #e1e5eb;border-radius:17px;background:#fff;margin:24px 0 12px;padding:0 15px}
+#editor .care-details>summary{display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none;min-height:70px;padding:13px 0;font-size:14px;color:#364151;font-weight:500}
+#editor .care-details>summary::-webkit-details-marker{display:none}
+#editor .care-details>summary small{display:block;margin-top:5px;font-size:11px;font-weight:400;color:#7b8592}
+#editor .care-details>summary::after{content:'⌄';font-size:19px;color:#8c95a2;line-height:1;transition:transform .15s}
+#editor .care-details[open]>summary::after{transform:rotate(180deg)}
+#editor .care-details[open]>summary{border-bottom:1px solid #edf0f4;margin-bottom:18px}
+#editor .check{display:flex;align-items:center;gap:12px;min-height:49px;margin:0;padding:12px 0;border:0;border-bottom:1px solid #edf0f4;border-radius:0;font-size:14px;font-weight:400;color:#4a5869}
+#editor .check:last-child{border-bottom:0}#editor .check input{width:20px;height:20px;flex-shrink:0;margin:0}
+#editor .feeding-editor{margin-top:18px;padding-top:18px}#editor .feeding-editor h3{font-size:15px;color:#364151}
+#editor .hint{font-size:11px;line-height:1.65;margin:16px 0}#editor #feed-times{gap:10px}#editor #feed-times label{min-width:0}#editor #feed-times input{max-width:100%;min-width:0;padding:11px 8px}
+#editor .editor-actions{position:sticky;bottom:0;z-index:2;padding:12px 0 calc(16px + var(--safe-bottom));background:#f7f8fa;border-top:1px solid #e5e8ee;margin-top:18px}
+#editor .editor-actions .primary{width:100%;min-height:52px;margin:0;border-radius:16px}
+#editor #remove{display:block;width:100%;min-height:46px;border-radius:14px;background:#fff;border:1px solid #eddedd;font-size:13px;margin:18px 0 0}
+#editor #remove[hidden]{display:none}#form-error:empty{display:none}
+@media(max-width:360px){#portraits button{font-size:9px;min-height:74px}#portraits svg{width:34px;height:34px}#editor .sheet-head h2{font-size:23px}}
+@media(prefers-reduced-motion:reduce){#editor .care-details>summary::after{transition:none}}
