@@ -41,3 +41,25 @@ dialog{position:fixed;overflow-y:auto;overscroll-behavior:contain;-webkit-overfl
 @media(max-height:700px){.experience-stage{padding-top:18px}.welcome-art{height:90px;margin-bottom:16px}.experience-stage h1{font-size:36px;margin-bottom:14px}.experience-copy{margin-bottom:16px}.experience-stage:has(.pin-pad){padding-top:14px}.experience-stage:has(.pin-pad) h1{font-size:28px}.pin-dots{padding-bottom:18px}.pin-keys{gap:8px 22px}.pin-keys button{width:58px;height:58px}}
 
 .experience-top{justify-content:center}
+
+/* Keep the first screen a compact group instead of spreading it vertically. */
+.welcome[data-step=welcome]{overscroll-behavior-y:none}
+.welcome[data-step=welcome] .experience-stage{margin:clamp(20px,4dvh,36px) auto 0;padding:0;max-width:340px}
+.welcome[data-step=welcome] .welcome-art{height:100px;margin-bottom:18px}
+.welcome[data-step=welcome] h1{margin-bottom:16px}
+.welcome[data-step=welcome] .experience-copy{margin-bottom:18px}
+.welcome[data-step=welcome] .experience-primary{margin-top:0}
+.welcome[data-step=welcome] .experience-secondary{margin-top:4px}
+.welcome[data-step=welcome] .install-guide{margin-top:4px}
+@media(max-height:700px){
+ .welcome[data-step=welcome] .experience-content{padding-top:calc(12px + var(--safe-top));padding-bottom:calc(12px + var(--safe-bottom))}
+ .welcome[data-step=welcome] .experience-stage{margin-top:12px}
+ .welcome[data-step=welcome] .welcome-art{height:64px;margin-bottom:12px}
+ .welcome[data-step=welcome] .welcome-paw{width:64px;height:64px;border-radius:21px;transform:none}.welcome[data-step=welcome] .welcome-paw svg{width:37px;height:37px}
+ .welcome[data-step=welcome] .welcome-pet{width:48px;height:48px;border-radius:16px}.welcome[data-step=welcome] .welcome-pet svg{width:43px;height:43px}
+ .welcome[data-step=welcome] h1{font-size:34px;margin-bottom:12px}
+ .welcome[data-step=welcome] .experience-copy{margin-bottom:12px;line-height:1.5}
+ .welcome[data-step=welcome] .experience-primary{min-height:48px}
+ .welcome[data-step=welcome] .experience-secondary{margin-top:0}
+}
+@media(max-height:600px){.welcome[data-step=welcome] .experience-stage{margin-top:16px}.welcome[data-step=welcome] .welcome-art{height:48px;margin-bottom:8px}.welcome[data-step=welcome] .welcome-paw{width:48px;height:48px;border-radius:16px}.welcome[data-step=welcome] .welcome-paw svg{width:30px;height:30px}.welcome[data-step=welcome] h1{font-size:32px}}

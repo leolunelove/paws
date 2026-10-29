@@ -4,7 +4,7 @@ const updateAppDisplay=()=>document.documentElement.classList.toggle('installed-
 updateAppDisplay();appDisplay.addEventListener('change',updateAppDisplay);
 import {CARE,dayKey,seed,todayEvent,logCare,validate,feedingTimes,careEvents,slotEvent,nextFeed,dayInZone} from './model.js';
 const $=s=>document.querySelector(s),KEY='paws.household.v1';
-import {startExperience} from './experience.js?v=19';
+import {startExperience} from './experience.js?v=20';
 import {portraits,paw} from './portraits.js';
 $('.paw').innerHTML=paw;
 const icons={bowl:'<path d="M3 10h18c0 7-4 10-9 10S3 17 3 10Z"/><path d="M7 6v1m5-3v3m5-1v1"/>',walk:'<path d="m6 17 4-5 4 3 3 5M10 12l2-6 4 4 4 1M3 20h5"/><circle cx="14" cy="3" r="1.6"/>',pill:'<path d="m8 16 8-8m-9-3a5 5 0 0 1 7 0l5 5a5 5 0 0 1-7 7l-5-5a5 5 0 0 1 0-7Z"/>'};
