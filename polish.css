@@ -138,3 +138,38 @@ main .brand{font-size:23px;letter-spacing:-.9px;gap:7px}main .paw{width:29px;hei
 #editor #remove[hidden]{display:none}#form-error:empty{display:none}
 @media(max-width:360px){#portraits button{font-size:9px;min-height:74px}#portraits svg{width:34px;height:34px}#editor .sheet-head h2{font-size:23px}}
 @media(prefers-reduced-motion:reduce){#editor .care-details>summary::after{transition:none}}
+
+/* Settings and sharing use the same simple grouped sheets as the pet editor. */
+:is(#preferences,#family) .sheet-head{margin-bottom:24px;gap:12px}
+:is(#preferences,#family) .sheet-head h2{font-size:25px;line-height:1.2}
+:is(#preferences,#family) .sheet-head .close{width:44px;min-height:44px;flex-shrink:0;border-radius:50%;background:#e9ecf1}
+#preferences .setting{padding:17px 16px 5px;background:#fff;border:1px solid #e1e5eb;border-radius:18px;margin:0 0 16px}
+#preferences .setting>strong{display:block;font-size:14px;font-weight:600;color:#364151;overflow-wrap:anywhere}
+#preferences .badge{display:inline-block;margin:8px 0 0;padding:4px 7px;border:0;border-radius:7px;background:#edf0f4;color:#74808e;font-size:10px}
+#preferences .setting p{font-size:12px;line-height:1.6;margin:10px 0 12px;color:#76818f}
+#preferences .setting :is(.text-button,.import){display:flex;align-items:center;width:100%;min-height:48px;padding:12px 0;margin:0;text-align:left;justify-content:flex-start;border:0;border-top:1px solid #edf0f4;border-radius:0;font-size:13px;color:#ad4935;font-weight:500}
+#preferences .setting :is(.text-button,.import)::after{content:'›';margin-left:auto;color:#a1a9b4;font-size:20px;font-weight:400}
+#preferences .setting .leave-home{color:#b94b46}
+#preferences .setting #install[hidden]{display:none}
+#preferences #backup-status:empty{display:none}#preferences>.hint{font-size:11px;line-height:1.65;margin:18px 4px 0}
+#family .invite-card{background:#fff;border:1px solid #e1e5eb;border-radius:21px;padding:22px 18px 6px;text-align:center}
+#family .family-intro{font-size:18px;font-weight:600;color:#364151;margin:0;overflow-wrap:anywhere}
+#family .family-intro small{font-size:11px;font-weight:400;color:#7c8693;margin-top:16px}
+#family .home-code{font-size:28px;letter-spacing:3px;border:0;background:none;padding:12px 0 22px;color:#ad4935;line-height:1.2}
+#family .invite-card .primary{width:100%;min-height:52px;border-radius:15px}
+#family .invite-card .text-button{display:block;width:100%;min-height:48px;margin:4px 0 0;font-size:13px}
+#family .share-note{font-size:12px;line-height:1.65;margin:16px 4px 22px}
+#family .pin-settings{background:#fff;border:1px solid #e1e5eb;border-radius:17px;padding:0 16px;margin:0}
+#family .pin-settings>summary{display:flex;align-items:center;justify-content:space-between;min-height:70px;padding:13px 0;list-style:none;font-size:14px;font-weight:500;color:#364151}
+#family .pin-settings>summary::-webkit-details-marker{display:none}
+#family .pin-settings>summary small{display:block;margin-top:5px;font-size:11px;font-weight:400;color:#7b8592}
+#family .pin-settings>summary::after{content:'⌄';font-size:19px;color:#8c95a2}#family .pin-settings[open]>summary::after{transform:rotate(180deg)}
+#family .pin-settings[open]>summary{border-bottom:1px solid #edf0f4}
+#family #rotate-passcode>.hint{font-size:11px;line-height:1.65;text-align:center;margin:18px 0}
+#family #rotate-passcode>.primary{width:100%;margin:0 0 17px;font-size:14px}
+#family .access-note{font-size:11px;text-align:center;margin:16px 0 0;color:#818a97}
+#family .home-feedback{font-size:12px;text-align:center;color:#a94331;margin:16px 0 0}#family .home-feedback:empty{display:none}
+html.installed-app #preferences .install-guide-trigger{display:none}
+@media(display-mode:standalone){#preferences .install-guide-trigger{display:none}}
+#preferences .setting>strong+.text-button{margin-top:12px}
+#preferences .install-guide-trigger span{display:none}
