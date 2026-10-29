@@ -39,3 +39,5 @@ dialog{position:fixed;overflow-y:auto;overscroll-behavior:contain;-webkit-overfl
  input:not([type=checkbox]):not([type=file]),select,.experience-stage #room-code{font-size:16px}
 }
 @media(max-height:700px){.experience-stage{padding-top:18px}.welcome-art{height:90px;margin-bottom:16px}.experience-stage h1{font-size:36px;margin-bottom:14px}.experience-copy{margin-bottom:16px}.experience-stage:has(.pin-pad){padding-top:14px}.experience-stage:has(.pin-pad) h1{font-size:28px}.pin-dots{padding-bottom:18px}.pin-keys{gap:8px 22px}.pin-keys button{width:58px;height:58px}}
+
+.experience-top{justify-content:center}
